@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { RecipeService } from "../recipes/recipe.service";
-import { Recipe } from "../recipes/recipe.model";
-import { exhaustMap, map, take, tap } from "rxjs/operators";
-import { AuthService } from "../auth/auth.service";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { RecipeService } from '../recipes/recipe.service';
+import { Recipe } from '../recipes/recipe.model';
+import { exhaustMap, map, take, tap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class DataStorageService {
   constructor(
@@ -19,7 +19,7 @@ export class DataStorageService {
     const recipes = this.recipeService.getRecipes();
     return this.http
       .post(
-        "https://ng-course-recipebook-aa791.firebaseio.com/recipes.json",
+        'https://ng-course-recipebook-aa791.firebaseio.com/recipes.json',
         recipes
       )
       .subscribe((response) => {
@@ -32,9 +32,9 @@ export class DataStorageService {
       take(1),
       exhaustMap((user) => {
         return this.http.get<Recipe[]>(
-          "https://ng-course-recipebook-aa791.firebaseio.com/recipes.json",
+          'https://ng-course-recipebook-aa791.firebaseio.com/recipes.json',
           {
-            params: new HttpParams().set("auth", user.token),
+            params: new HttpParams().set('auth', user.token),
           }
         );
       }),

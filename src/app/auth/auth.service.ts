@@ -6,6 +6,7 @@ import { User } from './user.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
 import { AuthActionsTypes } from './store/auth.actions';
+import { Route, Router } from '@angular/router';
 
 export interface AuthResponseData {
   kind: string;
@@ -22,9 +23,11 @@ export interface AuthResponseData {
 })
 export class AuthService {
   user = new BehaviorSubject<User>(null);
+  private _tokenExirationTimer: any;
 
   constructor(
     private http: HttpClient,
+    private _router: Router,
     private store: Store<fromApp.AppState>
   ) {}
 
@@ -76,6 +79,23 @@ export class AuthService {
       );
   }
 
+  logout() {
+    this.user.next(null);
+    this._router.navigate(['/auth']);
+    localStorage.removeItem('userData');
+    if (this._tokenExirationTimer) {
+      clearTimeout(this._tokenExirationTimer);
+    }
+    this._tokenExirationTimer = null;
+  }
+
+  autoLogout(exiratonDuration: number) {
+    console.log(exiratonDuration);
+    this._tokenExirationTimer = setTimeout(() => {
+      this.logout();
+    }, exiratonDuration);
+  }
+
   autoLogin() {
     const userData: {
       email: string;
@@ -107,7 +127,7 @@ export class AuthService {
       const expirationDuration =
         new Date(userData._tokenExpirationDate).getTime() -
         new Date().getTime();
-      // this.autoLogout(expirationDuration);
+      this.autoLogout(expirationDuration);
     }
   }
 
@@ -120,6 +140,8 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
     this.user.next(user);
+    this.autoLogout(expiresIn * 1000);
+    localStorage.setItem('userData', JSON.stringify(user));
   }
 
   private handleError(errorRes: HttpErrorResponse) {
