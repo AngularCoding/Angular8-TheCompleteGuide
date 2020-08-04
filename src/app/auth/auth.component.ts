@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
-import {AuthResponseData, AuthService} from './auth.service';
-import {Observable} from "rxjs";
-import {Router} from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { AuthResponseData, AuthService } from "./auth.service";
+import { Observable } from "rxjs";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html'
+  selector: "app-auth",
+  templateUrl: "./auth.component.html",
 })
 export class AuthComponent implements OnInit {
   isLoginMode = true;
@@ -34,20 +34,20 @@ export class AuthComponent implements OnInit {
     } else {
       authObs = this.authService.signup(email, password);
     }
-    authObs.subscribe(resData => {
-        console.log(resData);
+    authObs.subscribe(
+      (resData) => {
+        console.log("Response Data", resData);
         this.isLoading = false;
-        this.router.navigate(['/recipes']);
+        this.router.navigate(["/recipes"]);
       },
-      errorMessage => {
+      (errorMessage) => {
         console.log(errorMessage);
         this.error = errorMessage;
         this.isLoading = false;
-      });
+      }
+    );
     form.reset();
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
