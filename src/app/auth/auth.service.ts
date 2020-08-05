@@ -5,9 +5,9 @@ import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { User } from './user.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
-import { AuthActionsTypes, AuthLogout } from './store/auth.actions';
+import { AuthActionsTypes, AuthLogout } from './store/auth.action';
 import { Route, Router } from '@angular/router';
-import { AuthLogin } from './store/auth.actions';
+import { AuthLogin } from './store/auth.action';
 
 export interface AuthResponseData {
   kind: string;

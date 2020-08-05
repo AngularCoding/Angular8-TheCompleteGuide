@@ -1,5 +1,8 @@
-import { Ingredient } from "../../shared/ingredient.model";
-import * as ShoppingListActions from "./shopping-list.actions";
+import { Ingredient } from '../../shared/ingredient.model';
+import {
+  ShoppingListActions,
+  ShoppingListActionsTypes,
+} from './shopping-list.actions';
 
 export interface State {
   ingredients: Ingredient[];
@@ -8,27 +11,27 @@ export interface State {
 }
 
 const initialState: State = {
-  ingredients: [new Ingredient("Apples", 5), new Ingredient("Tomatoes", 10)],
+  ingredients: [new Ingredient('Apples', 5), new Ingredient('Tomatoes', 10)],
   editedIngredient: null,
   editedIngredientIndex: -1,
 };
 
 export function shoppingListReducer(
   state: State = initialState,
-  action: ShoppingListActions.ShoppingListActions
+  action: ShoppingListActions
 ) {
   switch (action.type) {
-    case ShoppingListActions.ADD_INGREDIENT:
+    case ShoppingListActionsTypes.AddIngredient:
       return {
         ...state,
         ingredients: [...state.ingredients, action.payload],
       };
-    case ShoppingListActions.ADD_INGREDIENTS:
+    case ShoppingListActionsTypes.AddIngredients:
       return {
         ...state,
         ingredients: [...state.ingredients, ...action.payload],
       };
-    case ShoppingListActions.UPDATE_INGREDIENT:
+    case ShoppingListActionsTypes.UpdateIngredient:
       const ingredient = state.ingredients[state.editedIngredientIndex];
       const updatedIngredient = {
         ...ingredient,
@@ -42,7 +45,7 @@ export function shoppingListReducer(
         editedIngredientIndex: -1,
         editedIngredient: null,
       };
-    case ShoppingListActions.DELETE_INGREDIENT:
+    case ShoppingListActionsTypes.DeleteIngredient:
       return {
         ...state,
         ingredients: state.ingredients.filter((ig, igIndex) => {
@@ -51,13 +54,13 @@ export function shoppingListReducer(
         editedIngredientIndex: -1,
         editedIngredient: null,
       };
-    case ShoppingListActions.START_EDIT:
+    case ShoppingListActionsTypes.StartEdit:
       return {
         ...state,
         editedIngredientIndex: action.payload,
         editedIngredient: { ...state.ingredients[action.payload] },
       };
-    case ShoppingListActions.STOP_EDIT:
+    case ShoppingListActionsTypes.StopEdit:
       return {
         ...state,
         editedIngredient: null,

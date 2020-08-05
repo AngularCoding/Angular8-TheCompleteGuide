@@ -20,6 +20,8 @@ import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import * as fromApp from './store/app.reducer';
+import { EffectsModule } from "@ngrx/effects";
+import { AuthEffects } from "./auth/store/auth.effects";
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import * as fromApp from './store/app.reducer';
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
+    EffectsModule.forRoot([AuthEffects])
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
