@@ -1,14 +1,17 @@
 import { Action } from '@ngrx/store';
 
 export enum AuthActionsTypes {
-  Login = '[Auth] Login',
-  Logout = '[Auth] Logout',
   LoginStart = '[Auth] Login Start',
-  LoginFail = '[Auth] Login Fail'
+  AuthenticateSuccess = '[Auth] Authenticate Success',
+  AuthenticateFail = '[Auth] Authenticate Fail',
+  SignupStart = '[Auth] Signup Start',
+  Logout = '[Auth] Logout',
+  ClearError = '[Auth] Clear Errors',
+  AutoLogin = '[Auth] Auto Login',
 }
 
-export class AuthLogin implements Action {
-  readonly type = AuthActionsTypes.Login;
+export class AuthenticateSuccess implements Action {
+  readonly type = AuthActionsTypes.AuthenticateSuccess;
   constructor(
     public payload: {
       email: string;
@@ -25,13 +28,32 @@ export class AuthLogout implements Action {
 
 export class LoginStart implements Action {
   readonly type = AuthActionsTypes.LoginStart;
-  constructor(public payload: {email: string, password: string}) {}
+  constructor(public payload: { email: string; password: string }) {}
 }
 
-export class LoginFail implements Action {
-  readonly type = AuthActionsTypes.LoginFail;
+export class AuthenticateFail implements Action {
+  readonly type = AuthActionsTypes.AuthenticateFail;
   constructor(public paylod: string) {}
-
 }
 
-export type AuthAction = AuthLogin | AuthLogout | LoginStart | LoginFail;
+export class SignupStart implements Action {
+  readonly type = AuthActionsTypes.SignupStart;
+  constructor(public payload: { email: string; password: string }) {}
+}
+
+export class ClearError implements Action {
+  readonly type = AuthActionsTypes.ClearError;
+}
+
+export class AutoLogin implements Action {
+  readonly type = AuthActionsTypes.AutoLogin;
+}
+
+export type AuthAction =
+  | AuthenticateSuccess
+  | AuthLogout
+  | LoginStart
+  | AuthenticateFail
+  | SignupStart
+  | ClearError
+  | AutoLogin;

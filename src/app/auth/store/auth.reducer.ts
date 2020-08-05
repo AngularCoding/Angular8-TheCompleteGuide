@@ -4,19 +4,19 @@ import { AuthAction, AuthActionsTypes } from './auth.action';
 export interface State {
   user: User;
   authError: string;
-  loading: boolean
+  loading: boolean;
 }
 
 const initialState: State = {
   user: null,
   authError: null,
-  loading: false
+  loading: false,
 };
 
 export function authReducer(state = initialState, action: AuthAction) {
   console.log(state);
   switch (action.type) {
-    case AuthActionsTypes.Login:
+    case AuthActionsTypes.AuthenticateSuccess:
       const user = new User(
         action.payload.email,
         action.payload.userId,
@@ -27,7 +27,7 @@ export function authReducer(state = initialState, action: AuthAction) {
         ...state,
         authError: null,
         user,
-        loading: false
+        loading: false,
       };
     case AuthActionsTypes.Logout:
       return {
@@ -35,18 +35,24 @@ export function authReducer(state = initialState, action: AuthAction) {
         user: null,
       };
     case AuthActionsTypes.LoginStart:
+    case AuthActionsTypes.SignupStart:
       return {
         ...state,
         authError: null,
-        loading: true
+        loading: true,
       };
-    case AuthActionsTypes.LoginFail:
+    case AuthActionsTypes.AuthenticateFail:
       return {
         ...state,
         user: null,
         authError: action.paylod,
-        loading: false
+        loading: false,
       };
+      case AuthActionsTypes.ClearError:
+        return {
+          ...state,
+          authError: null
+        };
     default:
       return state;
   }
