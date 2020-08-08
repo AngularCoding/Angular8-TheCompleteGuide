@@ -27,7 +27,7 @@ import { PlaceholderDirective } from './shared/placeholder/placeholder.directive
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { RecipeEffects } from "./recipes/store/recipe.effects";
+import { RecipeEffects } from './recipes/store/recipe.effects';
 
 @NgModule({
   declarations: [
